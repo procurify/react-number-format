@@ -28,6 +28,7 @@ const propTypes = {
   thousandsGroupStyle: PropTypes.oneOf(['thousand', 'lakh', 'wan']),
   decimalScale: PropTypes.number,
   fixedDecimalScale: PropTypes.bool,
+  forceOnBlurWithFormat: PropTypes.bool,
   displayType: PropTypes.oneOf(['input', 'text']),
   prefix: PropTypes.string,
   suffix: PropTypes.string,
@@ -76,6 +77,7 @@ const defaultProps = {
   allowEmptyFormatting: false,
   allowLeadingZeros: false,
   isNumericString: false,
+  forceOnBlurWithFormat: false,
   type: 'text',
   onValueChange: noop,
   onChange: noop,
@@ -754,15 +756,14 @@ class NumberFormat extends React.Component {
 
   onBlur(e: SyntheticInputEvent) {
     const {props, state} = this;
-    const {format, onBlur, allowLeadingZeros} = props;
+    const {format, onBlur, allowLeadingZeros, forceOnBlurWithFormat} = props;
     let {numAsString} = state;
     const lastValue = state.value;
     this.focusedElm = null;
 
     clearTimeout(this.focusTimeout);
 
-
-    if (!format) {
+    if (!format || forceOnBlurWithFormat) {
       // if the numAsString is not a valid number reset it to empty
       if (isNaN(parseFloat(numAsString))) {
         numAsString = '';

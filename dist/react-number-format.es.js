@@ -1,5 +1,5 @@
 /**
- * react-number-format - 4.4.2
+ * @alexcheuk/react-number-format - 4.4.2
  * Author : Sudhanshu Yadav
  * Copyright (c) 2016, 2020 to Sudhanshu Yadav, released under the MIT license.
  * https://github.com/s-yadav/react-number-format
@@ -357,6 +357,7 @@ var propTypes$1 = {
   thousandsGroupStyle: propTypes.oneOf(['thousand', 'lakh', 'wan']),
   decimalScale: propTypes.number,
   fixedDecimalScale: propTypes.bool,
+  forceOnBlurWithFormat: propTypes.bool,
   displayType: propTypes.oneOf(['input', 'text']),
   prefix: propTypes.string,
   suffix: propTypes.string,
@@ -395,6 +396,7 @@ var defaultProps = {
   allowEmptyFormatting: false,
   allowLeadingZeros: false,
   isNumericString: false,
+  forceOnBlurWithFormat: false,
   type: 'text',
   onValueChange: noop,
   onChange: noop,
@@ -1136,13 +1138,14 @@ function (_React$Component) {
           state = this.state;
       var format = props.format,
           onBlur = props.onBlur,
-          allowLeadingZeros = props.allowLeadingZeros;
+          allowLeadingZeros = props.allowLeadingZeros,
+          forceOnBlurWithFormat = props.forceOnBlurWithFormat;
       var numAsString = state.numAsString;
       var lastValue = state.value;
       this.focusedElm = null;
       clearTimeout(this.focusTimeout);
 
-      if (!format) {
+      if (!format || forceOnBlurWithFormat) {
         // if the numAsString is not a valid number reset it to empty
         if (isNaN(parseFloat(numAsString))) {
           numAsString = '';

@@ -1,6 +1,6 @@
 /// <reference types="react" />
 
-declare module "react-number-format" {
+declare module "@alexcheuk/react-number-format" {
 
   //exclude types from the InputHTMLAttributes
   const {defaultValue, value, ...inputAttributes}: React.InputHTMLAttributes<HTMLInputElement>;
@@ -32,6 +32,7 @@ declare module "react-number-format" {
     thousandsGroupStyle?: 'thousand' | 'lakh' | 'wan';
     decimalScale?: number;
     fixedDecimalScale?: boolean;
+    forceOnBlurWithFormat?: boolean;
     displayType?: 'input' | 'text';
     prefix?: string;
     suffix?: string;
