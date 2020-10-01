@@ -363,7 +363,7 @@
     thousandsGroupStyle: propTypes.oneOf(['thousand', 'lakh', 'wan']),
     decimalScale: propTypes.number,
     fixedDecimalScale: propTypes.bool,
-    forceOnBlurWithFormat: propTypes.bool,
+    forceValidateOnBlur: propTypes.bool,
     displayType: propTypes.oneOf(['input', 'text']),
     prefix: propTypes.string,
     suffix: propTypes.string,
@@ -402,7 +402,7 @@
     allowEmptyFormatting: false,
     allowLeadingZeros: false,
     isNumericString: false,
-    forceOnBlurWithFormat: false,
+    forceValidateOnBlur: false,
     type: 'text',
     onValueChange: noop,
     onChange: noop,
@@ -1145,13 +1145,13 @@
         var format = props.format,
             onBlur = props.onBlur,
             allowLeadingZeros = props.allowLeadingZeros,
-            forceOnBlurWithFormat = props.forceOnBlurWithFormat;
+            forceValidateOnBlur = props.forceValidateOnBlur;
         var numAsString = state.numAsString;
         var lastValue = state.value;
         this.focusedElm = null;
         clearTimeout(this.focusTimeout);
 
-        if (!format || forceOnBlurWithFormat) {
+        if (!format || forceValidateOnBlur) {
           // if the numAsString is not a valid number reset it to empty
           if (isNaN(parseFloat(numAsString))) {
             numAsString = '';

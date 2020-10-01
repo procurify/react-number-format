@@ -32,7 +32,7 @@ declare module "@procurify/react-number-format" {
     thousandsGroupStyle?: 'thousand' | 'lakh' | 'wan';
     decimalScale?: number;
     fixedDecimalScale?: boolean;
-    forceOnBlurWithFormat?: boolean;
+    forceValidateOnBlur?: boolean;
     displayType?: 'input' | 'text';
     prefix?: string;
     suffix?: string;
