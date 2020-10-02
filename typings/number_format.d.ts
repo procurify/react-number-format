@@ -1,6 +1,6 @@
 /// <reference types="react" />
 
-declare module "@procurify/react-number-format" {
+declare module "@procurifydev/react-number-format" {
 
   //exclude types from the InputHTMLAttributes
   const {defaultValue, value, ...inputAttributes}: React.InputHTMLAttributes<HTMLInputElement>;
