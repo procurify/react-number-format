@@ -1,5 +1,5 @@
 /**
- * @procurifydev/react-number-format - 4.4.4
+ * @procurifydev/react-number-format - 4.4.9
  * Author : Sudhanshu Yadav
  * Copyright (c) 2016, 2020 to Sudhanshu Yadav, released under the MIT license.
  * https://github.com/s-yadav/react-number-format
@@ -231,6 +231,31 @@ function fixLeadingZero(numStr) {
   var afterDecimal = parts[1] || '';
   return "".concat(isNegative ? '-' : '').concat(beforeDecimal).concat(afterDecimal ? ".".concat(afterDecimal) : '');
 }
+function fixTrailingZeros(numStr) {
+  if (!numStr) return numStr;
+  var isNegative = numStr[0] === '-';
+  if (isNegative) numStr = numStr.substring(1, numStr.length);
+  var parts = numStr.split('.');
+  var beforeDecimal = parts[0] || '0';
+  var afterDecimal = parts[1] ? parts[1].replace(/0+$/, '') : '';
+  return "".concat(isNegative ? '-' : '').concat(beforeDecimal).concat(afterDecimal ? ".".concat(afterDecimal) : '');
+}
+function fixMinimumDecimalScale(numStr, minimumDecimalScale) {
+  if (!numStr || minimumDecimalScale < 0) return numStr;
+  var isNegative = numStr[0] === '-';
+  if (isNegative) numStr = numStr.substring(1, numStr.length);
+  var parts = numStr.split('.');
+  var beforeDecimal = parts[0] || '0';
+  var afterDecimal = '';
+
+  if (parts[1]) {
+    afterDecimal = parts[1].length < minimumDecimalScale ? parts[1].concat(new Array(minimumDecimalScale - parts[1].length).fill('0').join('')) : parts[1];
+  } else {
+    afterDecimal = new Array(minimumDecimalScale).fill('0').join('');
+  }
+
+  return "".concat(isNegative ? '-' : '').concat(beforeDecimal).concat(afterDecimal ? ".".concat(afterDecimal) : '');
+}
 /**
  * limit decimal numbers to given scale
  * Not used .fixedTo because that will break with big numbers
@@ -357,6 +382,7 @@ var propTypes$1 = {
   thousandsGroupStyle: propTypes.oneOf(['thousand', 'lakh', 'wan']),
   decimalScale: propTypes.number,
   fixedDecimalScale: propTypes.bool,
+  minimumDecimalScale: propTypes.number,
   forceValidateOnBlur: propTypes.bool,
   displayType: propTypes.oneOf(['input', 'text']),
   prefix: propTypes.string,
@@ -371,6 +397,7 @@ var propTypes$1 = {
   allowNegative: propTypes.bool,
   allowEmptyFormatting: propTypes.bool,
   allowLeadingZeros: propTypes.bool,
+  allowTrailingZeros: propTypes.bool,
   onValueChange: propTypes.func,
   onKeyDown: propTypes.func,
   onMouseUp: propTypes.func,
@@ -390,11 +417,13 @@ var defaultProps = {
   decimalSeparator: '.',
   thousandsGroupStyle: 'thousand',
   fixedDecimalScale: false,
+  minimumDecimalScale: 0,
   prefix: '',
   suffix: '',
   allowNegative: true,
   allowEmptyFormatting: false,
   allowLeadingZeros: false,
+  allowTrailingZeros: true,
   isNumericString: false,
   forceValidateOnBlur: false,
   type: 'text',
@@ -1138,7 +1167,9 @@ function (_React$Component) {
           state = this.state;
       var format = props.format,
           onBlur = props.onBlur,
+          minimumDecimalScale = props.minimumDecimalScale,
           allowLeadingZeros = props.allowLeadingZeros,
+          allowTrailingZeros = props.allowTrailingZeros,
           forceValidateOnBlur = props.forceValidateOnBlur;
       var numAsString = state.numAsString;
       var lastValue = state.value;
@@ -1153,6 +1184,14 @@ function (_React$Component) {
 
         if (!allowLeadingZeros) {
           numAsString = fixLeadingZero(numAsString);
+        }
+
+        if (!allowTrailingZeros) {
+          numAsString = fixTrailingZeros(numAsString);
+        }
+
+        if (minimumDecimalScale > 0) {
+          numAsString = fixMinimumDecimalScale(numAsString, minimumDecimalScale);
         }
 
         var formattedValue = this.formatNumString(numAsString); //change the state

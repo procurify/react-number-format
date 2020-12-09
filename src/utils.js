@@ -62,6 +62,35 @@ export function fixLeadingZero(numStr?: string) {
   return `${isNegative ? '-': ''}${beforeDecimal}${afterDecimal ? `.${afterDecimal}` : ''}`;
 }
 
+export function fixTrailingZeros(numStr?: string) {
+  if (!numStr) return numStr;
+  const isNegative = numStr[0] === '-';
+  if (isNegative) numStr = numStr.substring(1, numStr.length);
+  const parts = numStr.split('.');
+  const beforeDecimal = parts[0] || '0';
+  const afterDecimal = parts[1] ? parts[1].replace(/0+$/,'') : '';
+
+  return `${isNegative ? '-': ''}${beforeDecimal}${afterDecimal ? `.${afterDecimal}` : ''}`;
+}
+
+export function fixMinimumDecimalScale(numStr?: string, minimumDecimalScale?: number) {
+  if (!numStr || minimumDecimalScale < 0) return numStr;
+  const isNegative = numStr[0] === '-';
+  if (isNegative) numStr = numStr.substring(1, numStr.length);
+  const parts = numStr.split('.');
+  const beforeDecimal = parts[0] || '0';
+
+  let afterDecimal = ''
+
+  if (parts[1]) {
+    afterDecimal = parts[1].length < minimumDecimalScale ? parts[1].concat(new Array(minimumDecimalScale - parts[1].length).fill('0').join('')) : parts[1]
+  } else {
+    afterDecimal = new Array(minimumDecimalScale).fill('0').join('')
+  }
+
+  return `${isNegative ? '-': ''}${beforeDecimal}${afterDecimal ? `.${afterDecimal}` : ''}`;
+}
+
 /**
  * limit decimal numbers to given scale
  * Not used .fixedTo because that will break with big numbers

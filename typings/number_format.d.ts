@@ -32,6 +32,7 @@ declare module "@procurifydev/react-number-format" {
     thousandsGroupStyle?: 'thousand' | 'lakh' | 'wan';
     decimalScale?: number;
     fixedDecimalScale?: boolean;
+    minimumDecimalScale?: number;
     forceValidateOnBlur?: boolean;
     displayType?: 'input' | 'text';
     prefix?: string;
@@ -46,6 +47,7 @@ declare module "@procurifydev/react-number-format" {
     allowNegative?: boolean;
     allowEmptyFormatting?: boolean;
     allowLeadingZeros?: boolean;
+    allowTrailingZeros?: boolean;
     onValueChange?: (values: NumberFormatValues) => void;
     /**
      * these are already included in React.HTMLAttributes<HTMLInputElement>

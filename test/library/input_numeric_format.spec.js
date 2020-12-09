@@ -159,6 +159,39 @@ describe('Test NumberFormat as input with numeric format options', () => {
     expect(wrapper.state().value).toEqual('2.456.981,89');
   });
 
+  it('should strip trailing zeros onBlur with allowTrailingZeros=false', () => {
+    const wrapper = shallow(<NumberFormat decimalScale={4} allowTrailingZeros={false} />);
+    const input = wrapper.find('input');
+
+    input.simulate('change', getCustomEvent('4111.1000'));
+    simulateBlurEvent(input);
+    expect(wrapper.state().value).toEqual('4111.1');
+  })
+
+  it('should fill minimumDecimalScale', () => {
+    const wrapper = shallow(<NumberFormat decimalScale={4} minimumDecimalScale={4} />);
+    const input = wrapper.find('input');
+
+    //case 1st - whole numbers
+    input.simulate('change', getCustomEvent('1'));
+    simulateBlurEvent(input);
+    expect(wrapper.state().value).toEqual('1.0000');
+
+    //case 2nd - decimal numbers
+    input.simulate('change', getCustomEvent('4111.1'));
+    simulateBlurEvent(input);
+    expect(wrapper.state().value).toEqual('4111.1000');
+  })
+
+  it('should fill minimumDecimalScale and strip trailing zeros', () => {
+    const wrapper = shallow(<NumberFormat decimalScale={4} minimumDecimalScale={2} allowTrailingZeros={false}  />);
+    const input = wrapper.find('input');
+
+    input.simulate('change', getCustomEvent('4111.1000'));
+    simulateBlurEvent(input);
+    expect(wrapper.state().value).toEqual('4111.10');
+  })
+
   it('should limit to passed decimal scale', () => {
     const wrapper = shallow(<NumberFormat decimalScale={4} fixedDecimalScale={true}/>);
     const input = wrapper.find('input');

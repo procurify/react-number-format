@@ -8,6 +8,8 @@ import {
   charIsNumber,
   escapeRegExp,
   fixLeadingZero,
+  fixTrailingZeros,
+  fixMinimumDecimalScale,
   limitToScale,
   roundToPrecision,
   omit,
@@ -28,6 +30,7 @@ const propTypes = {
   thousandsGroupStyle: PropTypes.oneOf(['thousand', 'lakh', 'wan']),
   decimalScale: PropTypes.number,
   fixedDecimalScale: PropTypes.bool,
+  minimumDecimalScale: PropTypes.number,
   forceValidateOnBlur: PropTypes.bool,
   displayType: PropTypes.oneOf(['input', 'text']),
   prefix: PropTypes.string,
@@ -51,6 +54,7 @@ const propTypes = {
   allowNegative: PropTypes.bool,
   allowEmptyFormatting: PropTypes.bool,
   allowLeadingZeros: PropTypes.bool,
+  allowTrailingZeros: PropTypes.bool,
   onValueChange: PropTypes.func,
   onKeyDown: PropTypes.func,
   onMouseUp: PropTypes.func,
@@ -71,11 +75,13 @@ const defaultProps = {
   decimalSeparator: '.',
   thousandsGroupStyle: 'thousand',
   fixedDecimalScale: false,
+  minimumDecimalScale: 0,
   prefix: '',
   suffix: '',
   allowNegative: true,
   allowEmptyFormatting: false,
   allowLeadingZeros: false,
+  allowTrailingZeros: true,
   isNumericString: false,
   forceValidateOnBlur: false,
   type: 'text',
@@ -756,7 +762,7 @@ class NumberFormat extends React.Component {
 
   onBlur(e: SyntheticInputEvent) {
     const {props, state} = this;
-    const {format, onBlur, allowLeadingZeros, forceValidateOnBlur} = props;
+    const {format, onBlur, minimumDecimalScale, allowLeadingZeros, allowTrailingZeros, forceValidateOnBlur} = props;
     let {numAsString} = state;
     const lastValue = state.value;
     this.focusedElm = null;
@@ -771,6 +777,14 @@ class NumberFormat extends React.Component {
 
       if (!allowLeadingZeros) {
         numAsString = fixLeadingZero(numAsString);
+      }
+
+      if (!allowTrailingZeros) {
+        numAsString = fixTrailingZeros(numAsString);
+      }
+
+      if (minimumDecimalScale > 0) {
+        numAsString = fixMinimumDecimalScale(numAsString, minimumDecimalScale);
       }
 
       const formattedValue = this.formatNumString(numAsString);
