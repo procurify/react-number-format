@@ -73,7 +73,7 @@
     "react-dom": "^15.4.0 || ^16.0.0",
     "react-router": "5",
     "react-transform-hmr": "^1.0.4",
-    "rollup": "^1.22.0",
+    "rollup": "^3.29.5",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-filesize": "^6.2.0",
