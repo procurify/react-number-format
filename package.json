@@ -71,7 +71,7 @@
     "material-ui": "^0.20.2",
     "react": "^15.4.0 || ^16.0.0",
     "react-dom": "^15.4.0 || ^16.0.0",
-    "react-router": "5",
+    "react-router": "7",
     "react-transform-hmr": "^1.0.4",
     "rollup": "^1.22.0",
     "rollup-plugin-babel": "^4.3.3",
