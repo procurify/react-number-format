@@ -1,7 +1,7 @@
 /**
  * @procurifydev/react-number-format - 4.4.9
  * Author : Sudhanshu Yadav
- * Copyright (c) 2016, 2020 to Sudhanshu Yadav, released under the MIT license.
+ * Copyright (c) 2016, 2024 to Sudhanshu Yadav, released under the MIT license.
  * https://github.com/s-yadav/react-number-format
  */
 
