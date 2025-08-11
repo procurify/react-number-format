@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_procurifydev_react_number_format=self.webpackChunk_procurifydev_react_number_format||[]).push([[690],{6205:e=>{e.exports=JSON.parse('{"plugin":{"name":"docusaurus-plugin-content-pages","id":"default"}}')}}]);
