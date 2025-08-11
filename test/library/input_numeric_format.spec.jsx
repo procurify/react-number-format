@@ -867,4 +867,64 @@ describe('Test NumberFormat as input with numeric format options', () => {
       expect(input).toHaveValue('1,2345,6789');
     });
   });
+
+  describe('minimumDecimalScale', () => {
+    it('should pad zeros on blur to reach minimumDecimalScale when value has fewer decimals', async () => {
+      const { input, user } = await render(<NumericFormat minimumDecimalScale={3} />);
+      await simulateKeyInput(user, input, '12', 0);
+      expect(input).toHaveValue('12');
+      simulateBlurEvent(input);
+      expect(input).toHaveValue('12.000');
+    });
+
+    it('should not modify value if it already has equal or more decimals', async () => {
+      const { input, user } = await render(<NumericFormat minimumDecimalScale={3} />);
+      await simulateKeyInput(user, input, '15.66666', 0);
+      simulateBlurEvent(input);
+      expect(input).toHaveValue('15.66666');
+    });
+
+    it('should pad only up to decimalScale when both are set', async () => {
+      const { input, user } = await render(
+        <NumericFormat minimumDecimalScale={3} decimalScale={2} />,
+      );
+      await simulateKeyInput(user, input, '9', 0);
+      simulateBlurEvent(input);
+      // decimalScale=2 caps decimals, effective min = 2
+      expect(input).toHaveValue('9.00');
+
+      await clearInput(user, input);
+      await simulateKeyInput(user, input, '1.2', 0);
+      simulateBlurEvent(input);
+      expect(input).toHaveValue('1.20');
+    });
+  });
+
+  describe('allowTrailingZeros', () => {
+    it('should trim trailing zeros when allowTrailingZeros is false', async () => {
+      const { input, user } = await render(<NumericFormat allowTrailingZeros={false} />);
+      await simulateKeyInput(user, input, '12.3400', 0);
+      simulateBlurEvent(input);
+      expect(input).toHaveValue('12.34');
+    });
+
+    it('should trim before applying minimumDecimalScale padding', async () => {
+      const { input, user } = await render(
+        <NumericFormat allowTrailingZeros={false} minimumDecimalScale={3} />,
+      );
+      await simulateKeyInput(user, input, '12.1000', 0);
+      // after blur: trim to 12.1 then pad to 3 -> 12.100
+      simulateBlurEvent(input);
+      expect(input).toHaveValue('12.100');
+    });
+
+    it('should not trim when fixedDecimalScale is true', async () => {
+      const { input, user } = await render(
+        <NumericFormat allowTrailingZeros={false} decimalScale={4} fixedDecimalScale />,
+      );
+      await simulateKeyInput(user, input, '9.5', 0);
+      simulateBlurEvent(input);
+      expect(input).toHaveValue('9.5000');
+    });
+  });
 });

@@ -65,6 +65,7 @@ function extractNegationAndNumber(value) {
   return { hasNegation, value };
 }
 
+// eslint-disable-next-line no-unused-vars
 function CustomNegationNumberFormat({
   prefix = '',
   suffix = '',
@@ -218,6 +219,52 @@ class App extends React.Component {
             fixedDecimalScale={true}
             prefix="$"
           />
+        </div>
+
+        <div className="example">
+          <h3>Minimum decimal scale (pads on blur only)</h3>
+          <NumericFormat thousandSeparator prefix="$" minimumDecimalScale={3} decimalScale={8} />
+          <div style={{ fontSize: '12px', color: '#555' }}>
+            Type a whole number and blur the input: it will pad to 3 decimals (e.g. 12 ➜ 12.000).
+            Extra decimals are untouched.
+          </div>
+        </div>
+
+        <div className="example">
+          <h3>Trim trailing zeros on blur (allowTrailingZeros=false)</h3>
+          <div>
+            <label style={{ display: 'block', fontSize: 12, color: '#555' }}>
+              Default (keeps trailing zeros you type)
+            </label>
+            <NumericFormat thousandSeparator prefix="$" decimalScale={8} />
+          </div>
+          <div style={{ marginTop: 8 }}>
+            <label style={{ display: 'block', fontSize: 12, color: '#555' }}>
+              allowTrailingZeros={false} (trims unnecessary zeros)
+            </label>
+            <NumericFormat
+              thousandSeparator
+              prefix="$"
+              decimalScale={8}
+              allowTrailingZeros={false}
+            />
+          </div>
+          <div style={{ marginTop: 8 }}>
+            <label style={{ display: 'block', fontSize: 12, color: '#555' }}>
+              allowTrailingZeros={false} with minimumDecimalScale=3 (trims then pads floor)
+            </label>
+            <NumericFormat
+              thousandSeparator
+              prefix="$"
+              decimalScale={8}
+              minimumDecimalScale={3}
+              allowTrailingZeros={false}
+            />
+          </div>
+          <div style={{ fontSize: '12px', color: '#555', marginTop: 6 }}>
+            Try typing 12.3400 then blur: top retains 12.3400, middle becomes 12.34, bottom trims to
+            12.34 then ensures at least 3 decimals (12.340).
+          </div>
         </div>
 
         <div className="example">

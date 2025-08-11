@@ -1,4 +1,5 @@
 import React, { SyntheticEvent } from 'react';
+/* eslint-disable no-unused-vars */
 
 export type Timeout = ReturnType<typeof setTimeout>;
 
@@ -106,6 +107,17 @@ export type NumericFormatProps<BaseType = InputAttributes> = NumberFormatProps<
     thousandsGroupStyle?: 'thousand' | 'lakh' | 'wan' | 'none';
     decimalScale?: number;
     fixedDecimalScale?: boolean;
+    /**
+     * minimumDecimalScale: Ensures that on blur the value has at least the provided number of decimal places.
+     * Unlike fixedDecimalScale it only pads (with trailing zeros) if the existing scale is smaller and never trims or rounds extra decimals.
+     * It is only applied on blur (while editing user can input any number of decimals subject to decimalScale limit if provided).
+     */
+    minimumDecimalScale?: number;
+    /**
+     * allowTrailingZeros (default: true): If false, trailing zeros in the fractional part are trimmed on blur (unless fixedDecimalScale is true).
+     * Trimming happens before applying minimumDecimalScale padding.
+     */
+    allowTrailingZeros?: boolean;
     allowNegative?: boolean;
     allowLeadingZeros?: boolean;
     suffix?: string;

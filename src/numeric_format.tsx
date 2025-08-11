@@ -349,6 +349,8 @@ export function useNumericFormat<BaseType = InputAttributes>(
     thousandSeparator,
     decimalScale,
     fixedDecimalScale,
+    minimumDecimalScale,
+    allowTrailingZeros = true,
     prefix = '',
     defaultValue,
     value,
@@ -474,8 +476,37 @@ export function useNumericFormat<BaseType = InputAttributes>(
     }
 
     // apply fixedDecimalScale on blur event
-    if (fixedDecimalScale && decimalScale) {
+    if (fixedDecimalScale && decimalScale !== undefined) {
       _value = roundToPrecision(_value, decimalScale, fixedDecimalScale);
+    } else {
+      // optionally trim trailing zeros (only if we are not in fixedDecimalScale mode)
+      if (!allowTrailingZeros && _value.includes('.')) {
+        const { beforeDecimal, afterDecimal, addNegation } = splitDecimal(_value);
+        const trimmed = afterDecimal.replace(/0+$/, '');
+        _value = trimmed
+          ? `${addNegation ? '-' : ''}${beforeDecimal}.${trimmed}`
+          : `${addNegation ? '-' : ''}${beforeDecimal}`;
+      }
+      if (minimumDecimalScale && minimumDecimalScale > 0 && !fixedDecimalScale) {
+        // if decimals are disabled explicitly ignore minimumDecimalScale
+        if (decimalScale === 0) {
+          // no-op
+        } else {
+          const { beforeDecimal, afterDecimal, addNegation } = splitDecimal(_value);
+          // determine effective minimum (can't exceed decimalScale if provided)
+          const maxDecimals = decimalScale ?? Infinity;
+          const effectiveMin = Math.min(minimumDecimalScale, maxDecimals);
+          if (
+            effectiveMin > 0 &&
+            (beforeDecimal !== '' || afterDecimal !== '') &&
+            afterDecimal.length < effectiveMin
+          ) {
+            const padded = afterDecimal.padEnd(effectiveMin, '0');
+            // if there was no decimal part and maxDecimals is Infinity or >= effectiveMin
+            _value = `${addNegation ? '-' : ''}${beforeDecimal}.${padded}`;
+          }
+        }
+      }
     }
 
     if (_value !== numAsString) {

@@ -1,5 +1,5 @@
 {
-  "name": "react-number-format",
+  "name": "@procurify/react-number-format",
   "description": "React component to format number in an input or as a text.",
   "version": "5.4.4",
   "main": "dist/react-number-format.cjs.js",
