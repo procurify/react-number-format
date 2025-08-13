@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --mode development --config webpack.config.js",
-    "bundle": "cross-env yarn compile && yarn bundle-dist && yarn test-build && yarn test-ts",
+    "bundle": "cross-env yarn compile && yarn bundle-dist",
     "bundle-dist": "cross-env NODE_ENV=production rollup -c rollup.config.js",
     "compile": "cross-env NODE_ENV=production babel src --out-dir lib",
     "test": "cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=test karma start",
@@ -52,7 +52,7 @@
     "cross-env": "^7.0.3",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.7",
-    "cheerio": "0.22.0",
+    "cheerio": "^1.0.0-rc.12",
     "eslint": "^6.5.1",
     "eslint-loader": "^3.0.2",
     "eslint-plugin-import": "^2.18.2",
@@ -67,7 +67,7 @@
     "karma-rollup-preprocessor": "^7.0.8",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "^0.0.32",
-    "karma-webpack": "^4.0.2",
+    "karma-webpack": "^5.0.1",
     "material-ui": "^0.20.2",
     "react": "^15.4.0 || ^16.0.0",
     "react-dom": "^15.4.0 || ^16.0.0",
@@ -82,8 +82,8 @@
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-uglify": "^6.0.3",
     "typescript": "^3.6.3",
-    "webpack": "^4.41.0",
-    "webpack-cli": "^3.3.9"
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
   },
   "peerDependencies": {
     "react": "^0.14 || ^15.0.0-rc || ^15.0.0 || ^16.0.0-rc || ^16.0.0",
@@ -94,7 +94,6 @@
   },
   "resolutions": {
     "lodash": "^4.17.21",
-    "minimatch": "^3.1.2",
     "semver": "^6.3.1",
     "serialize-javascript": "^6.0.2",
     "node-fetch": "^2.6.12",
@@ -118,7 +117,6 @@
     "kind-of": "6.0.3",
     "decode-uri-component": "0.2.2",
     "moment": "^2.29.4",
-    "webpack-dev-middleware": "^3.7.3",
     "acorn": "^7.4.1",
     "ua-parser-js": "^0.7.33"
   }

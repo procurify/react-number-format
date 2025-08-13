@@ -1,5 +1,5 @@
 /**
- * @procurifydev/react-number-format - 4.4.9
+ * @procurifydev/react-number-format - 5.5.0
  * Author : Sudhanshu Yadav
  * Copyright (c) 2016, 2025 to Sudhanshu Yadav, released under the MIT license.
  * https://github.com/s-yadav/react-number-format
