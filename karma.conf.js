@@ -7,7 +7,8 @@ module.exports = function (config) {
   config.set({
     browsers: [TEST_BROWSER || "Chrome"],
     singleRun: runOnNode,
-    frameworks: ["jasmine"],
+    autoWatch: !runOnNode,
+  frameworks: ["jasmine", "webpack"],
     files: ["./test/**/*.spec.js"],
     reporters: [runOnNode ? "spec" : "kjhtml"],
     preprocessors: {
@@ -15,13 +16,13 @@ module.exports = function (config) {
     },
     webpack: {
       mode: "none",
+      watch: false,
       module: {
         rules: [
           { test: /\.js$/, exclude: /node_modules/, use: ["babel-loader"] },
         ],
       },
       externals: {},
-      watch: true,
     },
   });
 };
